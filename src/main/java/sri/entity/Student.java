@@ -10,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
 @Table(name = "students")
+@NamedQuery(name = "student_by_fname",query = "select s from Student s where s.firstName = :fname")
 public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

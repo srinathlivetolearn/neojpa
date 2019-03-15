@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -43,9 +45,7 @@ public class App {
 		timeTable.addStudent(student1);
 		runner.addClass(class1);
 		runner.addTimeTable(timeTable);
-		runner.addStudent(student);
-		runner.addStudent(student1);
-		System.out.println(runner.listStudents());
+		LOG.info(runner.getFromNamedQuery());
 	}
 
 	private void addTimeTable(TimeTableEntry timeTable) {
@@ -87,5 +87,12 @@ public class App {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Query q = session.createQuery("SELECT s FROM Student s");
 		return q.list();
+	}
+
+	public List<Student> getFromNamedQuery() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		TypedQuery<Student> query = session.getNamedQuery("student_by_fname");
+		query.setParameter("fname","Jane");
+		return query.getResultList();
 	}
 }
